@@ -1,12 +1,22 @@
-import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { SearchParamsDto } from '../dto/searchParams.dto';
+import { SearchParamsValidationPipe } from '../pipes/searchParams.pipe';
 
 @Controller('users')
 export class UserController {
   constructor() {}
 
   @Get()
-  getUsers() {
-    return 'users';
+  getUsers(@Query(SearchParamsValidationPipe) query: SearchParamsDto) {
+    return query;
   }
 
   @Get(':id')
