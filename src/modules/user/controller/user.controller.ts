@@ -7,15 +7,17 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { SearchParamsDto } from '../dto/searchParams.dto';
-import { SearchParamsValidationPipe } from '../pipes/searchParams.pipe';
+import { SearchParamsDto, searchParamsSchema } from '../dto/searchParams.dto';
+import { ValidationPipe } from '../pipes/validation.pipe';
 
 @Controller('users')
 export class UserController {
   constructor() {}
 
   @Get()
-  getUsers(@Query(SearchParamsValidationPipe) query: SearchParamsDto) {
+  getUsers(
+    @Query(new ValidationPipe(searchParamsSchema)) query: SearchParamsDto,
+  ) {
     return query;
   }
 
