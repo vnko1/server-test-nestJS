@@ -5,6 +5,5 @@ export const searchParamsSchema = z.object({
     .enum(['admin', 'user'], { message: 'Role must be admin or user' })
     .optional(),
 });
-// .required();
 
 export type SearchParamsDto = z.infer<typeof searchParamsSchema>;
