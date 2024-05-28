@@ -15,6 +15,7 @@ export class AppHttpExceptionFilter
   constructor() {
     super();
   }
+
   catch(exception: HttpException, host: ArgumentsHost) {
     const response = this.response(host);
     const status =
