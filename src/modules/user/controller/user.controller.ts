@@ -8,7 +8,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { SearchParamsDto, searchParamsSchema } from '../dto/searchParams.dto';
-import { ValidationPipe } from '../pipes/validation.pipe';
+import { ZodValidationPipe } from '../pipes/zodValidation.pipe';
+import { IdValidationPipe } from '../pipes/idValidation.pipe';
 
 @Controller('users')
 export class UserController {
@@ -16,13 +17,13 @@ export class UserController {
 
   @Get()
   getUsers(
-    @Query(new ValidationPipe(searchParamsSchema)) query: SearchParamsDto,
+    @Query(new ZodValidationPipe(searchParamsSchema)) query: SearchParamsDto,
   ) {
     return query;
   }
 
   @Get(':id')
-  getUser(@Param('id') id: string) {
+  getUser(@Param('id', IdValidationPipe) id: string) {
     return 'Get user with: ' + id;
   }
 
