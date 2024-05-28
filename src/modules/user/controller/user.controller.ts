@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -7,9 +8,16 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { SearchParamsDto, searchParamsSchema } from '../dto/searchParams.dto';
-import { ZodValidationPipe } from '../pipes/zodValidation.pipe';
-import { IdValidationPipe } from '../pipes/idValidation.pipe';
+
+import {
+  SearchParamsDto,
+  searchParamsSchema,
+  AddUserDto,
+  addUserSchema,
+  EditUserDto,
+  editUserSchema,
+} from '../dto';
+import { ZodValidationPipe, IdValidationPipe } from '../pipes';
 
 @Controller('users')
 export class UserController {
@@ -28,17 +36,19 @@ export class UserController {
   }
 
   @Post()
-  addUser() {
-    return 'addUser';
+  addUser(@Body(new ZodValidationPipe(addUserSchema)) addUserDto: AddUserDto) {
+    return addUserDto;
   }
 
   @Patch()
-  editUser() {
-    return 'editUser';
+  editUser(
+    @Body(new ZodValidationPipe(editUserSchema)) editUserDto: EditUserDto,
+  ) {
+    return editUserDto;
   }
 
   @Delete(':id')
-  deleteUser(@Param('id') id: string) {
+  deleteUser(@Param('id', IdValidationPipe) id: string) {
     return 'delete user with: ' + id;
   }
 }
