@@ -3,7 +3,9 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -17,7 +19,7 @@ import {
   EditUserDto,
   editUserSchema,
 } from '../dto';
-import { ZodValidationPipe, IdValidationPipe } from '../pipes';
+import { ZodValidationPipe } from '../pipes';
 import { UserService } from '../service/user.service';
 
 @Controller('users')
@@ -25,15 +27,17 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get()
-  getUsers(
+  async getUsers(
     @Query(new ZodValidationPipe(searchParamsSchema)) query: SearchParamsDto,
   ) {
-    return query;
+    return await this.userService.getAllUsers(query);
   }
 
   @Get(':id')
-  getUser(@Param('id', IdValidationPipe) id: string) {
-    return 'Get user with: ' + id;
+  async getUser(@Param('id', ParseIntPipe) id: number) {
+    const user = await this.userService.getUser(id);
+    if (!user) throw new NotFoundException();
+    return user;
   }
 
   @Post()
@@ -43,15 +47,16 @@ export class UserController {
     return await this.userService.createUser(addUserDto);
   }
 
-  @Patch()
-  editUser(
+  @Patch(':id')
+  async editUser(
+    @Param('id', ParseIntPipe) id: number,
     @Body(new ZodValidationPipe(editUserSchema)) editUserDto: EditUserDto,
   ) {
-    return editUserDto;
+    return await this.userService.editUser(editUserDto, id);
   }
 
   @Delete(':id')
-  deleteUser(@Param('id', IdValidationPipe) id: string) {
+  async deleteUser(@Param('id', ParseIntPipe) id: string) {
     return 'delete user with: ' + id;
   }
 }

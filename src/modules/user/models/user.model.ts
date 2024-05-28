@@ -20,6 +20,6 @@ export class User extends Model {
   @Column
   role: string;
 
-  @HasOne(() => Profile, { foreignKey: 'userId' })
+  @HasOne(() => Profile, { foreignKey: 'userId', as: 'profile' })
   profile: Profile;
 }

@@ -25,9 +25,10 @@ export class Profile extends Model {
   state: string;
 
   @ForeignKey(() => User)
+  @AllowNull(false)
   @Column
   userId: number;
 
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, { as: 'user' })
   user: User;
 }
