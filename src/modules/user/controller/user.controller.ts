@@ -18,10 +18,11 @@ import {
   editUserSchema,
 } from '../dto';
 import { ZodValidationPipe, IdValidationPipe } from '../pipes';
+import { UserService } from '../service/user.service';
 
 @Controller('users')
 export class UserController {
-  constructor() {}
+  constructor(private userService: UserService) {}
 
   @Get()
   getUsers(
@@ -36,8 +37,10 @@ export class UserController {
   }
 
   @Post()
-  addUser(@Body(new ZodValidationPipe(addUserSchema)) addUserDto: AddUserDto) {
-    return addUserDto;
+  async addUser(
+    @Body(new ZodValidationPipe(addUserSchema)) addUserDto: AddUserDto,
+  ) {
+    return await this.userService.createUser(addUserDto);
   }
 
   @Patch()

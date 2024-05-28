@@ -1,2 +1,2 @@
 export { AppService } from './services';
-export { AppHttpExceptionFilter } from './exceptions';
+export { AppHttpExceptionFilter, DBExceptionFilter } from './exceptions';

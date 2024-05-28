@@ -3,19 +3,19 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 import { UserModule } from './modules';
-import { Profile, User } from './modules/user/models';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRoot({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: +process.env.POSTGRES_PORT,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
-      models: [User, Profile],
+      dialect: 'mysql',
+      host: process.env.MYSQL_HOST,
+      port: +process.env.MYSQL_PORT,
+      username: process.env.MYSQL_USER,
+      password: process.env.MYSQL_ROOT_PASSWORD,
+      database: process.env.MYSQL_DATABASE,
+      autoLoadModels: true,
+      synchronize: true,
     }),
     UserModule,
   ],
