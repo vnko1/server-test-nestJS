@@ -62,6 +62,10 @@ export class UserService extends AppService {
     });
   }
 
+  async getProfiles() {
+    return this.profileModel.findAll();
+  }
+
   async getUser(id: number) {
     return this.userModel.findOne({
       include: [{ model: this.profileModel, as: 'profile' }],
@@ -83,6 +87,22 @@ export class UserService extends AppService {
         where: { userId: id },
         returning: true,
         transaction,
+      });
+      await transaction.commit();
+
+      return { profile, user };
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
+  async deleteUser(id: number) {
+    const transaction = await this.getTransaction();
+    try {
+      const user = await this.userModel.destroy({ where: { id } });
+      const profile = await this.profileModel.destroy({
+        where: { userId: id },
       });
       await transaction.commit();
 

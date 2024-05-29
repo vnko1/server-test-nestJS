@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
@@ -34,11 +33,14 @@ export class UserController {
     return await this.userService.getAllUsers(query);
   }
 
+  @Get('profiles')
+  async getProfiles() {
+    return await this.userService.getProfiles();
+  }
+
   @Get(':id')
   async getUser(@Param('id', ParseIntPipe) id: number) {
-    const user = await this.userService.getUser(id);
-    if (!user) throw new NotFoundException();
-    return user;
+    return await this.userService.getUser(id);
   }
 
   @Post()
@@ -58,7 +60,8 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id', ParseIntPipe) id: string) {
-    return 'delete user with: ' + id;
+  @HttpCode(204)
+  async deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.deleteUser(id);
   }
 }

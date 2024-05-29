@@ -2,7 +2,7 @@ import { AllowNull, Column, HasOne, Model, Table } from 'sequelize-typescript';
 import { Profile } from './profile.model';
 
 @Table({
-  createdAt: false,
+  createdAt: true,
   updatedAt: false,
 })
 export class User extends Model {
