@@ -79,8 +79,8 @@ export class UserService extends AppService {
         transaction,
       });
 
-      const profile = await this.profileModel.create(editUserDto, {
-        where: { id },
+      const profile = await this.profileModel.update(editUserDto, {
+        where: { userId: id },
         returning: true,
         transaction,
       });

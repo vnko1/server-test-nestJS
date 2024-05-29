@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   NotFoundException,
   Param,
   ParseIntPipe,
@@ -48,6 +49,7 @@ export class UserController {
   }
 
   @Patch(':id')
+  @HttpCode(204)
   async editUser(
     @Param('id', ParseIntPipe) id: number,
     @Body(new ZodValidationPipe(editUserSchema)) editUserDto: EditUserDto,

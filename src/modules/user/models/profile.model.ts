@@ -11,6 +11,9 @@ import { User } from './user.model';
 @Table({
   createdAt: false,
   updatedAt: false,
+  defaultScope: {
+    attributes: { exclude: ['userId'] },
+  },
 })
 export class Profile extends Model {
   @AllowNull(false)
@@ -24,9 +27,9 @@ export class Profile extends Model {
   @Column
   state: string;
 
-  @ForeignKey(() => User)
   @AllowNull(false)
   @Column
+  @ForeignKey(() => User)
   userId: number;
 
   @BelongsTo(() => User, { as: 'user' })

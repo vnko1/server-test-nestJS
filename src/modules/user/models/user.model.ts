@@ -2,11 +2,8 @@ import { AllowNull, Column, HasOne, Model, Table } from 'sequelize-typescript';
 import { Profile } from './profile.model';
 
 @Table({
-  createdAt: true,
+  createdAt: false,
   updatedAt: false,
-  defaultScope: {
-    attributes: { exclude: ['id'] },
-  },
 })
 export class User extends Model {
   @AllowNull(false)
