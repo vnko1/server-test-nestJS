@@ -1,2 +1,1 @@
-export { BaseModule } from './base/base.module';
-
+export { UserModule } from './user/user.module';

@@ -5,25 +5,23 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { AppService } from 'src/common/services';
+import { DatabaseError } from 'sequelize';
+
+import { AppService } from 'src/common';
 
 @Catch()
-export class AppHttpExceptionFilter
-  extends AppService
-  implements ExceptionFilter
-{
+export class DBExceptionFilter extends AppService implements ExceptionFilter {
   constructor() {
     super();
   }
 
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(exception: DatabaseError, host: ArgumentsHost) {
     const response = this.response(host);
     const status =
       exception instanceof HttpException
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    if (exception.message) response('Error', exception.message, status);
-    else response(exception.name, exception.message, status);
+    response(exception.name, exception.message, status);
   }
 }
